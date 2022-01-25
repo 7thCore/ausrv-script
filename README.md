@@ -1,2 +1,0 @@
-# AuSrv-Script
-
