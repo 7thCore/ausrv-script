@@ -16,9 +16,9 @@ Pre-built packages available for Arch and Debian based distributions:
 
 -------------------------
 
-# The Among Us Impostor Server Project
+# Disclamer
 
-I am not part of this project nor do I take any credit or rights for it. The project is available here:
+This script is using the Impostor server project. I am not part of this project nor do I take any credit or rights for it. The project is available here:
 
 [Among Us Impostor Server](https://github.com/Impostor/Impostor)
 
