@@ -1386,7 +1386,7 @@ case "$1" in
 		script_send_notification_crash $2
 		;;
 	server_tmux_install)
-		script_server_tmux_install $2
+		script_server_tmux_install $2 $3
 		;;
 	timer_one)
 		script_timer_one

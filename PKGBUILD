@@ -31,7 +31,7 @@ source=('ausrv-script.bash'
         'ausrv-timer-2.service'
         'ausrv-timer-2.timer'
         'bash_profile')
-sha256sums=('93828bac74eaa23c3c15f277f89f3f3573cc18e8baeb248173554dec432e1b4e'
+sha256sums=('16f3d3e539aec1424051dbd1766c7dcdd0dd087a1276c3c6b1263e45bc5021fc'
             'e94f4da0e2fd7d4533839d7ffb1ed63ce3dd703524db4311a1c285eccc8eb677'
             '58701e231df2cc61c47fa0375c309e6aff74c3cfb3202727538812286a65b974'
             '98d21b496553e0039aef53e1be7ec9af7f045027257874afeea767fa4a050e87'
