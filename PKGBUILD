@@ -2,7 +2,7 @@
 
 pkgname=ausrv-script
 pkgver=1.0
-pkgrel=2
+pkgrel=3
 pkgdesc='Among Us Impostor server script for running the server on linux.'
 arch=('x86_64')
 license=('GPL3')
@@ -20,8 +20,7 @@ depends=('bash'
          'zip'
          'unzip'
          'p7zip'
-         'postfix'
-         'samba')
+         'postfix')
 install=ausrv-script.install
 source=('ausrv-script.bash'
         'ausrv-send-notification@.service'
@@ -31,7 +30,7 @@ source=('ausrv-script.bash'
         'ausrv-timer-2.service'
         'ausrv-timer-2.timer'
         'bash_profile')
-sha256sums=('16f3d3e539aec1424051dbd1766c7dcdd0dd087a1276c3c6b1263e45bc5021fc'
+sha256sums=('f525046627846f6f2d7c11c28dbda18ced623d26d5ae66b315b0302871615516'
             'e94f4da0e2fd7d4533839d7ffb1ed63ce3dd703524db4311a1c285eccc8eb677'
             '58701e231df2cc61c47fa0375c309e6aff74c3cfb3202727538812286a65b974'
             '98d21b496553e0039aef53e1be7ec9af7f045027257874afeea767fa4a050e87'
