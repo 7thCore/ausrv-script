@@ -21,7 +21,7 @@
 
 #Basics
 export NAME="AuSrv" #Name of the tmux session
-export VERSION="1.0-2" #Package and script version
+export VERSION="1.0-3" #Package and script version
 
 #Server configuration
 export SERVICE_NAME="ausrv" #Name of the service files, user, script and script log
