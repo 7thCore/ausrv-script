@@ -24,7 +24,7 @@ OnFailure=ausrv-send-notification@%i.service
 
 [Service]
 Type=forking
-KillMode=process
+KillMode=none
 WorkingDirectory=/srv/ausrv/server-%i
 ExecStartPre=/usr/bin/isrsrv-script pre-start %i
 ExecStartPre=/usr/bin/isrsrv-script server_tmux_install %i
