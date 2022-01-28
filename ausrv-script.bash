@@ -21,7 +21,7 @@
 
 #Basics
 export NAME="AuSrv" #Name of the tmux session
-export VERSION="1.0-3" #Package and script version
+export VERSION="1.0-4" #Package and script version
 
 #Server configuration
 export SERVICE_NAME="ausrv" #Name of the service files, user, script and script log
@@ -302,12 +302,12 @@ script_reload_services() {
 
 #---------------------------
 
-#Systemd service sends notification if notifications for start enabled
-script_send_notification_start_initialized() {
+#Pre-start functions to be called by the systemd service
+script_prestart() {
 	script_logs
 	if [[ "$EMAIL_START" == "1" ]]; then
-		mail -r "$EMAIL_SENDER ($NAME-$1)" -s "Notification: Server startup $1" $EMAIL_RECIPIENT <<- EOF
-		Server startup for $1 was initialized at $(date +"%d.%m.%Y %H:%M:%S")
+		mail -r "$EMAIL_SENDER ($NAME)" -s "Notification: Server startup $1" $EMAIL_RECIPIENT <<- EOF
+		Server startup was initialized at $(date +"%d.%m.%Y %H:%M:%S")
 		EOF
 	fi
 	if [[ "$DISCORD_START" == "1" ]]; then
@@ -320,12 +320,12 @@ script_send_notification_start_initialized() {
 
 #---------------------------
 
-#Systemd service sends notification if notifications for start enabled
-script_send_notification_start_complete() {
+#Post-start functions to be called by the systemd service
+script_poststart() {
 	script_logs
 	if [[ "$EMAIL_START" == "1" ]]; then
-		mail -r "$EMAIL_SENDER ($NAME-$1)" -s "Notification: Server startup $1" $EMAIL_RECIPIENT <<- EOF
-		Server startup for $1 was completed at $(date +"%d.%m.%Y %H:%M:%S")
+		mail -r "$EMAIL_SENDER ($NAME)" -s "Notification: Server startup $1" $EMAIL_RECIPIENT <<- EOF
+		Server startup was completed at $(date +"%d.%m.%Y %H:%M:%S")
 		EOF
 	fi
 	if [[ "$DISCORD_START" == "1" ]]; then
@@ -338,11 +338,11 @@ script_send_notification_start_complete() {
 
 #---------------------------
 
-#Systemd service sends notification if notifications for stop enabled
-script_send_notification_stop_initialized() {
+#Pre-stop functions to be called by the systemd service
+script_prestop() {
 	script_logs
 	if [[ "$EMAIL_STOP" == "1" ]]; then
-		mail -r "$EMAIL_SENDER ($NAME-$1)" -s "Notification: Server shutdown $1" $EMAIL_RECIPIENT <<- EOF
+		mail -r "$EMAIL_SENDER ($NAME)" -s "Notification: Server shutdown $1" $EMAIL_RECIPIENT <<- EOF
 		Server shutdown was initiated at $(date +"%d.%m.%Y %H:%M:%S")
 		EOF
 	fi
@@ -356,11 +356,29 @@ script_send_notification_stop_initialized() {
 
 #---------------------------
 
-#Systemd service sends notification if notifications for stop enabled
-script_send_notification_stop_complete() {
+#Post-stop functions to be called by the systemd service
+script_poststop() {
 	script_logs
+
+	#Check if the server is still running, if it is wait for it to stop.
+	while true; do
+		tmux -L $SERVICE_NAME-$1-tmux.sock has-session -t $NAME 2>/dev/null
+		if [ $? -eq 1 ]; then
+			break
+		fi
+		sleep 1
+	done
+
+	if [ -f "/tmp/$SERVICE_NAME-$1-tmux.log" ]; then
+		rm /tmp/$SERVICE_NAME-$1-tmux.log
+	fi
+
+	if [ -f "/tmp/$SERVICE_NAME-$1-tmux.conf" ]; then
+		rm /tmp/$SERVICE_NAME-$1-tmux.conf
+	fi
+
 	if [[ "$EMAIL_STOP" == "1" ]]; then
-		mail -r "$EMAIL_SENDER ($NAME-$1)" -s "Notification: Server shutdown $1" $EMAIL_RECIPIENT <<- EOF
+		mail -r "$EMAIL_SENDER ($NAME)" -s "Notification: Server shutdown $1" $EMAIL_RECIPIENT <<- EOF
 		Server shutdown was complete at $(date +"%d.%m.%Y %H:%M:%S")
 		EOF
 	fi
@@ -1249,7 +1267,7 @@ script_config_script() {
 #---------------------------
 
 #Do not allow for another instance of this script to run to prevent data loss
-if [[ "send_notification_start_initialized" != "$1" ]] && [[ "send_notification_start_complete" != "$1" ]] && [[ "send_notification_stop_initialized" != "$1" ]] && [[ "send_notification_stop_complete" != "$1" ]] && [[ "send_notification_crash" != "$1" ]] && [[ "move_wine_log" != "$1" ]] && [[ "server_tmux_install" != "$1" ]] && [[ "attach" != "$1" ]] && [[ "status" != "$1" ]]; then
+if [[ "pre-start" != "$1" ]] && [[ "post-start" != "$1" ]] && [[ "pre-stop" != "$1" ]] && [[ "post-stop" != "$1" ]] && [[ "send_notification_crash" != "$1" ]] && [[ "server_tmux_install" != "$1" ]] && [[ "attach" != "$1" ]] && [[ "status" != "$1" ]]; then
 	SCRIPT_PID_CHECK=$(basename -- "$0")
 	if pidof -x "$SCRIPT_PID_CHECK" -o $$ > /dev/null; then
 		echo "An another instance of this script is already running, please clear all the sessions of this script before starting a new session"
@@ -1370,17 +1388,17 @@ case "$1" in
 		;;
 #---------------------------
 #Hidden functions meant for systemd service use
-	send_notification_start_initialized)
-		script_send_notification_start_initialized $2
+	pre-start)
+		script_prestart $2
 		;;
-	send_notification_start_complete)
-		script_send_notification_start_complete $2
+	post-start)
+		script_poststart $2
 		;;
-	send_notification_stop_initialized)
-		script_send_notification_stop_initialized $2
+	pre-stop)
+		script_prestop $2
 		;;
-	send_notification_stop_complete)
-		script_send_notification_stop_complete $2
+	post-stop)
+		script_poststop $2
 		;;
 	send_notification_crash)
 		script_send_notification_crash $2
