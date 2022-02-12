@@ -25,7 +25,7 @@ OnFailure=ausrv-send-notification@%i.service
 [Service]
 Type=forking
 KillMode=none
-WorkingDirectory=/srv/ausrv/server-%i
+WorkingDirectory=/srv/ausrv/server/%i
 ExecStartPre=/usr/bin/ausrv-script pre-start %i
 ExecStartPre=/usr/bin/ausrv-script server_tmux_install %i
 ExecStart=/usr/bin/tmux -f /tmp/%u-%i-tmux.conf -L %u-%i-tmux.sock new-session -d -s AuSrv '/usr/bin/impostor-server'
