@@ -21,7 +21,7 @@
 
 #Basics
 export NAME="AuSrv" #Name of the tmux session
-export VERSION="1.0-5" #Package and script version
+export VERSION="1.0-6" #Package and script version
 export SERVICE_NAME="ausrv" #Name of the service files, user, script and script log
 export LOG_DIR="/srv/$SERVICE_NAME/logs" #Location of the script's log files.
 export LOG_STRUCTURE="$LOG_DIR/$(date +"%Y")/$(date +"%m")/$(date +"%d")" #Folder structure of the script's log files.
@@ -756,13 +756,13 @@ script_diagnostics() {
 		echo "Script present: No"
 	fi
 
-	if [ -d "/srv/$SERVICE_NAME/config" ]; then
+	if [ -d "$CONFIG_DIR" ]; then
 		echo "Configuration folder present: Yes"
 	else
 		echo "Configuration folder present: No"
 	fi
 
-	if [ -d "/srv/$SERVICE_NAME/backups" ]; then
+	if [ -d "$BCKP_DIR" ]; then
 		echo "Backups folder present: Yes"
 	else
 		echo "Backups folder present: No"
@@ -1090,12 +1090,12 @@ script_config_email() {
 	fi
 
 	echo "Writing configuration file..."
-	echo 'email_sender='"$INSTALL_EMAIL_SENDER" > /srv/$SERVICE_NAME/config/$SERVICE_NAME-email.conf
-	echo 'email_recipient='"$INSTALL_EMAIL_RECIPIENT" >> /srv/$SERVICE_NAME/config/$SERVICE_NAME-email.conf
-	echo 'email_start='"$INSTALL_EMAIL_START" >> /srv/$SERVICE_NAME/config/$SERVICE_NAME-email.conf
-	echo 'email_stop='"$INSTALL_EMAIL_STOP" >> /srv/$SERVICE_NAME/config/$SERVICE_NAME-email.conf
-	echo 'email_crash='"$INSTALL_EMAIL_CRASH" >> /srv/$SERVICE_NAME/config/$SERVICE_NAME-email.conf
-	chown $SERVICE_NAME:$SERVICE_NAME /srv/$SERVICE_NAME/config/$SERVICE_NAME-email.conf
+	echo 'email_sender='"$INSTALL_EMAIL_SENDER" > $CONFIG_DIR/$SERVICE_NAME-email.conf
+	echo 'email_recipient='"$INSTALL_EMAIL_RECIPIENT" >> $CONFIG_DIR/$SERVICE_NAME-email.conf
+	echo 'email_start='"$INSTALL_EMAIL_START" >> $CONFIG_DIR/$SERVICE_NAME-email.conf
+	echo 'email_stop='"$INSTALL_EMAIL_STOP" >> $CONFIG_DIR/$SERVICE_NAME-email.conf
+	echo 'email_crash='"$INSTALL_EMAIL_CRASH" >> $CONFIG_DIR/$SERVICE_NAME-email.conf
+	chown $SERVICE_NAME:$SERVICE_NAME $CONFIG_DIR/$SERVICE_NAME-email.conf
 	echo "Done"
 }
 
@@ -1121,7 +1121,6 @@ script_config_script() {
 
 	systemctl --user enable --now $SERVICE_NAME-timer-1.timer
 	systemctl --user enable --now $SERVICE_NAME-timer-2.timer
-	echo "$SERVICE_NAME@01.service" > $CONFIG_DIR/$SERVICE_NAME-server-list.txt
 
 	echo "Adding first server"
 	script_add_server
@@ -1131,6 +1130,7 @@ script_config_script() {
 	touch $CONFIG_DIR/$SERVICE_NAME-script.conf
 	echo 'script_bckp_delold=14' > $CONFIG_DIR/$SERVICE_NAME-script.conf
 	echo 'script_log_delold=7' >> $CONFIG_DIR/$SERVICE_NAME-script.conf
+	echo 'script_update_ignore_failed_startups=0' >> $CONFIG_DIR/$SERVICE_NAME-script.conf
 
 	echo "Configuration complete"
 	echo "For any settings you'll want to change, edit the files located in $CONFIG_DIR/"
