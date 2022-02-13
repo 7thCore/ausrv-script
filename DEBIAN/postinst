@@ -1,13 +1,12 @@
-getent group isrsrv >/dev/null || groupadd --system isrsrv
-getent passwd isrsrv >/dev/null || useradd --system -g isrsrv \
-  -d /srv/isrsrv/ -s /bin/bash isrsrv
+getent group ausrv >/dev/null || groupadd --system ausrv
+getent passwd ausrv >/dev/null || useradd --system -g ausrv -d /srv/ausrv/ -s /bin/bash ausrv
 
-install -dm700 srv/isrsrv/backups
-install -dm700 srv/isrsrv/config
-install -dm700 srv/isrsrv/logs
-install -dm700 srv/isrsrv/server
-install -dm700 srv/isrsrv/tmpfs
-install -dm700 srv/isrsrv/updates
-chown -R isrsrv:isrsrv srv/isrsrv
-loginctl enable-linger isrsrv
-systemctl start user@$(id -u isrsrv).service
+install -dm700 srv/ausrv/backups
+install -dm700 srv/ausrv/config
+install -dm700 srv/ausrv/logs
+install -dm700 srv/ausrv/server
+install -dm700 srv/ausrv/tmpfs
+install -dm700 srv/ausrv/updates
+chown -R ausrv:ausrv srv/ausrv
+loginctl enable-linger ausrv
+systemctl start user@$(id -u ausrv).service
