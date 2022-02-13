@@ -1,9 +1,19 @@
 post_install() {
-  getent group ausrv >/dev/null || groupadd --system ausrv
-  getent passwd ausrv >/dev/null || useradd --system -g ausrv \
-    -d /srv/ausrv/ -s /bin/bash ausrv
+	getent group ausrv >/dev/null || groupadd --system ausrv
+	getent passwd ausrv >/dev/null || useradd --system -g ausrv -d /srv/ausrv/ -s /bin/bash ausrv
 
-  chown -R ausrv:ausrv srv/ausrv
-  loginctl enable-linger ausrv
-  systemctl start user@$(id -u ausrv).service
+	chown -R ausrv:ausrv srv/ausrv
+	loginctl enable-linger ausrv
+	systemctl start user@$(id -u ausrv).service
+}
+
+post_upgrade() {
+	chown -R ausrv:ausrv srv/ausrv/.config/systemd/user
+	chown ausrv:ausrv srv/ausrv/*
+}
+
+post_remove() {
+	loginctl disable-linger ausrv
+	systemctl stop user@$(id -u ausrv).service
+	userdel --remove ausrv
 }
