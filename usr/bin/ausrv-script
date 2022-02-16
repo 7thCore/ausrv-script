@@ -21,13 +21,12 @@
 
 #Basics
 export NAME="AuSrv" #Name of the tmux session
-export VERSION="1.0-7" #Package and script version
+export VERSION="1.0-8" #Package and script version
 export SERVICE_NAME="ausrv" #Name of the service files, user, script and script log
 export LOG_DIR="/srv/$SERVICE_NAME/logs" #Location of the script's log files.
 export LOG_STRUCTURE="$LOG_DIR/$(date +"%Y")/$(date +"%m")/$(date +"%d")" #Folder structure of the script's log files.
 export LOG_SCRIPT="$LOG_STRUCTURE/$SERVICE_NAME-script.log" #Script log.
 SRV_DIR="/srv/$SERVICE_NAME/server" #Location of the server located on your hdd/ssd.
-TMPFS_DIR="/srv/$SERVICE_NAME/tmpfs" #Locaton of your tmpfs partition.
 CONFIG_DIR="/srv/$SERVICE_NAME/config" #Location of this script's configuration.
 BCKP_DIR="/srv/$SERVICE_NAME/backups" #Location of stored backups.
 BCKP_STRUCTURE="$(date +"%Y")/$(date +"%m")/$(date +"%d")" #How backups are sorted, by default it's sorted in folders by month and day.
@@ -1039,7 +1038,7 @@ script_config_email() {
 			read -p "Configure postfix? (y/n): " INSTALL_EMAIL_CONFIGURE
 			if [[ "$INSTALL_EMAIL_CONFIGURE" =~ ^([yY][eE][sS]|[yY])$ ]]; then
 				echo ""
-				read -p "Enter the relay host (example: smtp.gmail.com): " INSTALL_EMAIL_RELAY_HOSTNAME
+				read -p "Enter the relay host (example: smtp.gmail.com): " INSTALL_EMAIL_RELAY_HOST
 				echo ""
 				read -p "Enter the relay host port (example: 587): " INSTALL_EMAIL_RELAY_PORT
 				echo ""
