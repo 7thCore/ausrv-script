@@ -1,5 +1,5 @@
 Package: ausrv-script
-Version: 1.0-8
+Version: 1.0-9
 Architecture: amd64
 Essential: no
 Priority: optional
