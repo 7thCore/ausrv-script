@@ -26,7 +26,7 @@ This script is using the Impostor server project. I am not part of this project 
 
 # Donation
 
-If this project help you in any way, please consider donating.
+If this project help you in any way, please consider donating. :)
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=7DNGNW7TTXHFY)
 
