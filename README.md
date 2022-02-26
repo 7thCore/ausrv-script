@@ -23,3 +23,11 @@ This script is using the Impostor server project. I am not part of this project 
 [Among Us Impostor Server](https://github.com/Impostor/Impostor)
 
 -------------------------
+
+# Donation
+
+If this project help you in any way, please consider donating.
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=7DNGNW7TTXHFY)
+
+-------------------------
