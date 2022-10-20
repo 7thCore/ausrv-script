@@ -21,7 +21,7 @@
 
 #Basics
 export NAME="AuSrv" #Name of the tmux session
-export VERSION="1.0-9" #Package and script version
+export VERSION="1.1-1" #Package and script version
 export SERVICE_NAME="ausrv" #Name of the service files, user, script and script log
 export LOG_DIR="/srv/$SERVICE_NAME/logs" #Location of the script's log files.
 export LOG_STRUCTURE="$LOG_DIR/$(date +"%Y")/$(date +"%m")/$(date +"%d")" #Folder structure of the script's log files.
@@ -667,7 +667,7 @@ script_timer_one() {
 
 	if [ $RUNNING_SERVERS -gt "0" ]; then
 		script_remove_old_files
-		script_autobackup
+		script_backup
 	fi
 }
 
@@ -1246,9 +1246,6 @@ case "$1" in
 	backup)
 		script_backup
 		;;
-	autobackup)
-		script_autobackup
-		;;
 	delete_backup)
 		script_deloldbackup
 		;;
@@ -1290,7 +1287,7 @@ case "$1" in
 	echo -e "${GREEN}Configuration and installation${RED}: ${GREEN}config_script, config_discord, config_email, ${NC}"
 	echo -e "${GREEN}Server services managment${RED}: ${GREEN}add_server, remove_server, enable_services, disable_services, reload_services${NC}"
 	echo -e "${GREEN}Server and console managment${RED}: ${GREEN}start, stop,restart, attach${NC}"
-	echo -e "${GREEN}Backup managment${RED}: ${GREEN}backup, autobackup, delete_backup${NC}"
+	echo -e "${GREEN}Backup managment${RED}: ${GREEN}backup${NC}"
 	exit 1
 	;;
 esac
